@@ -1,0 +1,65 @@
+const { expect } = require("chai");
+const { ethers } = require("hardhat");
+
+require("@nomiclabs/hardhat-waffle");
+
+describe("Characters", function () {
+    let contract;
+    let owner;
+
+    beforeEach(async function () {
+
+        //get contract
+        const Characters = await ethers.getContractFactory("Characters");
+
+        //deploy contract passing in any constructor args
+        const characters = await Characters.deploy();
+
+        //wait till actually deployed
+        contract = await characters.deployed();
+
+        [owner] = await ethers.getSigners();
+    });
+
+    it("Should be able to list all characters", async function () {
+        await contract.addCharacter("Cobble", '{"0": "wheres the cog", "1": "wreck the bed"}');
+        await contract.addCharacter("Thie", '{"0": "pandas", "1": "sean paul is the best"}');
+
+        let retrievedCharacters = await contract.getCharacters();
+        let phrases0 = JSON.parse(retrievedCharacters[0]["phrases"]);
+        let phrases1 = JSON.parse(retrievedCharacters[1]["phrases"]);
+
+        expect(retrievedCharacters[0]["name"]).to.equal("Cobble");
+
+        expect(phrases0[0]).to.equal('wheres the cog');
+        expect(phrases0[1]).to.equal('wreck the bed');
+
+        expect(phrases1[0]).to.equal('pandas');
+        expect(phrases1[1]).to.equal('sean paul is the best');
+
+        expect(retrievedCharacters[1]["name"]).to.equal("Thie");
+    });
+
+    it("Should be able to add vote to a character", async function () {
+        await contract.addCharacter("Vince", '{"0": "wheres the phone", "1": "planetary"}');
+        let nextKey = await contract.getCharacterNextKey();
+        await contract.addVoteToCharacter(nextKey - 1);
+        let votedCharacter = await contract.getCharacter(nextKey - 1);
+
+        expect(votedCharacter.votes).to.equal(1);
+    });
+
+    it("Should be able to retrieve a character", async function () {
+        await contract.addCharacter("Clarence Anders", '{"0": "by no means", "1": "by all means"}');
+
+        let nextKey = await contract.getCharacterNextKey();
+        let character = await contract.getCharacter(nextKey - 1);
+
+        expect(character.name).to.equal("Clarence Anders");
+
+        let phrases = JSON.parse(character.phrases);
+
+        expect(phrases[0]).to.equal("by no means");
+        expect(phrases[1]).to.equal("by all means");
+    });
+});
