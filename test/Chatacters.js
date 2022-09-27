@@ -66,19 +66,21 @@ describe("Characters", function () {
     it("Should be able to mark character as innactive", async function() {
         await contract.addCharacter("Steph Sharpe", '{"0": "will be inactive", "1": "go away"}');
         let nextKey = await contract.getCharacterNextKey();
-
         let activeCharsCount = await contract.getActiveCharactersCount();
-        
         expect(activeCharsCount).to.equal(1);
-
         await contract.deleteCharacter(nextKey - 1);
-
         let activeCharsCountPostDelete = await contract.getActiveCharactersCount();
-
         expect(activeCharsCountPostDelete).to.equal(0);
-
         let charsPostDelete = await contract.getCharacters();
+    })
 
-        console.log('ac', charsPostDelete);
+    it("Should be able to update a character", async function() {
+        await contract.addCharacter("Suzi Chazinho", '{"0": "edit this", "1": "go away"}');
+        let nextKey = await contract.getCharacterNextKey();
+        await contract.updateCharacter(nextKey - 1, 'Sophi Caffezinho', '{"0": "rain again"}');
+        let updatedChar = await contract.getCharacter(nextKey - 1);
+        expect(updatedChar.name).to.equal('Sophi Caffezinho');
+        let phrases = JSON.parse(updatedChar.phrases);
+        expect(phrases[0]).to.equal("rain again");
     })
 });

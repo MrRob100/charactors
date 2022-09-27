@@ -63,4 +63,9 @@ contract Characters {
         characters[_id].active = false;
         activeCharactersCount--;
     }
+
+    function updateCharacter(uint _id, string memory _name, string memory _phrases) public {
+        characters[_id].name = _name;
+        characters[_id].phrases = _phrases;
+    }
 }
