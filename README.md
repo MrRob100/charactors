@@ -8,7 +8,7 @@ Run tests:
 ```shell
 npx hardhat test
 ```
-Tech use:
+Tech used:
 
 ![](hardhat192.png)
 ![](remix192.png)
