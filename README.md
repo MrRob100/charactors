@@ -1,13 +1,16 @@
-# Sample Hardhat Project
+# Smart contract 'Characters'
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.
+Smart contract allowing CRUD operations built and tested using Hardhat for DApp: https://github.com/MrRob100/chars-project/ published at https://mrrob100.github.io/chars/
 
-Try running some of the following tasks:
+Deployed using remix.
 
+Run tests:
 ```shell
-npx hardhat help
 npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat run scripts/deploy.js
 ```
+Tech use:
+
+![](hardhat192.png)
+![](remix192.png)
+![](solidity192.png)
+![](eth192.png)

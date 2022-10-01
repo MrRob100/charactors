@@ -10,6 +10,7 @@ contract Characters {
         uint id;
         string name;
         string phrases;
+        string image;
         uint votes;
         bool active;
         address creator;
@@ -23,8 +24,8 @@ contract Characters {
 
     uint activeCharactersCount;
 
-    function addCharacter(string memory _name, string memory _phrases) public {
-        characters[characterNextKey] = Character(characterNextKey, _name, _phrases, 0, true, msg.sender);
+    function addCharacter(string memory _name, string memory _phrases, string memory _image) public {
+        characters[characterNextKey] = Character(characterNextKey, _name, _phrases, _image, 0, true, msg.sender);
         characterNextKey++;
         activeCharactersCount++;
     }
@@ -64,8 +65,9 @@ contract Characters {
         activeCharactersCount--;
     }
 
-    function updateCharacter(uint _id, string memory _name, string memory _phrases) public {
+    function updateCharacter(uint _id, string memory _name, string memory _phrases, string memory _image) public {
         characters[_id].name = _name;
         characters[_id].phrases = _phrases;
+        characters[_id].image = _image;
     }
 }
